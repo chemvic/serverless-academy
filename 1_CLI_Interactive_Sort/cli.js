@@ -5,9 +5,8 @@ const rl = readline.createInterface({
 });
 
 const sortItems = ()=>{
-  rl.question('Enter a few words or numbers separated by a space ', (answer) => {
-    console.log(`Oh, so your favorite food is ${answer}`);
-   
+  rl.question('Enter a few words or numbers separated by a space... ', (answer) => {
+    
     const items = answer.split(' ');
     const words =items.filter((item)=>isNaN(item));
     const numbers = items.filter((item)=>!isNaN(item)).map(Number);
@@ -16,8 +15,14 @@ const sortItems = ()=>{
       rl.close();
     };
 
-
-      rl.question("Choose what would you like to see in the output. Enter the number of your choice or enter exit to stop the programm. 1. Sort words alphabetically 2. Show numbers from lesser to greater 3. Show numbers from bigger to smaller 4. Display words in ascending order by number of letters in the word 5. Show only unique words 6. Display only unique values from the set of words and numbers entered by the user: ", 
+      rl.question(`Choose what would you like to see in the output.
+       Enter the number of your choice or type exit to stop the programm. 
+       1. Sort words alphabetically 
+       2. Show numbers from lesser to greater 
+       3. Show numbers from bigger to smaller 
+       4. Display words in ascending order by number of letters in the word 
+       5. Show only unique words 
+       6. Display only unique values from the set of words and numbers entered by the user: `, 
    (choice)=>{
     
     switch (choice) {
