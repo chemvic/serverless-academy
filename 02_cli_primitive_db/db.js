@@ -10,19 +10,24 @@ const questions =[
     {
         type: 'input',
         name: 'user',
-        message: 'Enter the user`s name to create a new user. To cancel press ENTER',
-        validate(input){
-            if (input==='') {
-                return;
-            }
-            return;
-        }
+        message: 'Enter the user`s name to create a new user. To cancel press ENTER',    
+        
     },
     {
        type: 'list' ,
        name: 'gender',
        message: 'Choose your gender',
        choices: ['male', 'female'],
+       when: (answers) => {
+        if (answers.user === '') {
+            findUser();
+            return false;
+        } else {
+            return true;
+        }
+    },
+    
+ 
     },
     {
         type: 'input',
@@ -35,6 +40,7 @@ const questions =[
             };
             return 'Please enter your age in digits'
         },
+        when: (answers) => answers.user !== ''
     }
 ];
 
@@ -55,20 +61,56 @@ async function getUserByName(name) {
     const users = await getAllUsers();
     const result = users.find(user=>user.user.toLowerCase()===name.toLowerCase());
     if (!result) {
-        console.log('User with such name does not exist in data base');
+      return  console.log('User with such name does not exist in data base');
     }
     console.log(result);
   };
 
-function usersList(){
+
+
+function createUser(){
 inquirer.prompt(questions).then((answers)=>{
-    console.log(JSON.stringify(answers, null, ' '));
-    
-    addUser(answers);
-    usersList();
+       if (answers.user!=='') {
+        addUser(answers);
+       
+       }else{ 
+        findUser();
+        return;
+       }
+          
+    createUser();
+});
+};
+
+
+ function findUser (){
+ inquirer.prompt([{  
+type: 'confirm',
+name: 'toFindUser',
+message: 'Do you want to find the user by name in the database?',
+default: false,
+}])
+.then(async (answers)=>{
+if (!answers.toFindUser) {
+    return;
+}else{
+    const list = await getAllUsers();
+    console.log(list);
+    inquirer.prompt([{
+        type: 'input',
+        name: 'user',
+        message: 'Enter the user`s name that you want to find in DB',
+    }]).then((answers)=>{
+        if (answers.user!=='') {
+            getUserByName(answers.user);
+        }else{
+            findUser ();
+        }
+        
+    });
+};
 });
 
-}
+};
 
-
-usersList();
+createUser();
