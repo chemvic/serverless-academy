@@ -38,3 +38,4 @@ const bot = new TelegramBot(token, {polling: false});
     }
 
    sendMessages(argv);
+
