@@ -14,8 +14,8 @@ program.parse(process.argv);
 
 const argv =program.opts();
 
-const token = '6582920769:AAEb1p8xW0Qowj1SVyoL_3q4GGHz4fiVkSI';
-const chatId= 494934749;
+const token = '';
+const chatId= ;
 // 
 const bot = new TelegramBot(token, {polling: false});
           
