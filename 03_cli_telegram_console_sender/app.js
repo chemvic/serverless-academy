@@ -14,9 +14,9 @@ program.parse(process.argv);
 
 const argv =program.opts();
 
-const token = '6582920769:AAEb1p8xW0Qowj1SVyoL_3q4GGHz4fiVkSI';
-const chatId= 494934749;
-// 
+const token = '';
+const chatId= ;
+
 const bot = new TelegramBot(token, {polling: false});
           
 
@@ -27,24 +27,14 @@ const bot = new TelegramBot(token, {polling: false});
             }else
 
         if (sendPhoto) {
-            const absolutePath = path.resolve(sendPhoto);
-            bot.sendPhoto(chatId,sendPhoto );
-// {source: fs.createReadStream(absolutePath)}
+            const absolutePath = path.resolve(sendPhoto);           
+            const photoStream = fs.createReadStream(absolutePath);
+
+            bot.sendPhoto(chatId, photoStream);
+           
         }else{
             console.warn("\x1B[31m Unknown action type!");
         }            
     }
 
    sendMessages(argv);
-
-//     const bot = new TelegramBot(token, {polling: false});
-//  bot.sendMessage(chatId, `Спокойной ночи?`);
-
-//  bot.sendMessage(chatId, `Спокойной ночи?`);
-// const filePath = 'c:/Users/chemv/OneDrive/Documents/GitHub/Node/serverless-academy/03_cli_telegram_console_sender/assets/man-searching-with-magnifying-glass (1).jpg';
-
-// bot.sendPhoto(chatId, {
-//     source: fs.promises.readFile(filePath)
-// });
-// const photoPath = path.join(__dirname,'assets','til.jpg');
-//   bot.sendPhoto(chatId,photoPath );
