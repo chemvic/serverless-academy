@@ -41,8 +41,8 @@ const argv =program.opts();
 //   console.log(token);
 //   console.log(chatId);
 
-const token = '';
-const chatId= ;
+const token = '6582920769:AAEb1p8xW0Qowj1SVyoL_3q4GGHz4fiVkSI';
+const chatId= 494934749;
 
 
 
