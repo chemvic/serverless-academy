@@ -1,7 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 // const getWeatherForecast =require('./api');
 const axios =require('axios');
-const token = '';
+const token = '6582920769:AAEb1p8xW0Qowj1SVyoL_3q4GGHz4fiVkSI';
 
 const bot = new TelegramBot(token, {polling: true});
     
@@ -10,7 +10,8 @@ const bot = new TelegramBot(token, {polling: true});
             reply_markup: {
                 inline_keyboard: [[
                     {text: 'Forecast in Odesa', callback_data: 'forecast'}
-                ]]
+                ]],
+                one_time_keyboard: true
             }
         });
     });
@@ -23,7 +24,8 @@ const bot = new TelegramBot(token, {polling: true});
                     inline_keyboard: [
                         [{text: 'At intervals of 3 hours', callback_data: '3hours'}],
                         [{text: 'At intervals of 6 hours', callback_data: '6hours'}]
-                    ]
+                    ],
+                    one_time_keyboard: true
                 }
             });
         } else {
@@ -34,7 +36,7 @@ const bot = new TelegramBot(token, {polling: true});
 
     async function getWeatherForecast(msg, interval){
         try {
-            const API_KEY = '';
+            const API_KEY = '2e7139c6a4f80c6748f001736e0d42cb';
             const BASE_URL = 'https://api.openweathermap.org/data/2.5/forecast';
             const url =`${BASE_URL}?lat=46.477&lon=30.733&appid=${API_KEY}&units=metric`;
         
