@@ -1,6 +1,6 @@
 const axios =require('axios');
 
-const endpoints = [
+const ENDPOINTS = [
 'https://jsonbase.com/sls-team/json-793',
 'https://jsonbase.com/sls-team/json-955',
 'https://jsonbase.com/sls-team/json-231',
@@ -24,9 +24,7 @@ const endpoints = [
 ];
 
 
-async function endpointsChecker() {
-
-  for (let endpoint of endpoints) {
+async function endpointRequest(endpoint) {  
    
     for (let index = 1; index <= 3; index += 1) {
       try {
@@ -39,14 +37,54 @@ async function endpointsChecker() {
             console.log('The request is empty');
          }; 
       } catch (error) {
-        console.log(`[Fail] ${endpoint}: The endpoint is unavailable`);
+        // console.log(error.message);
       }
-    }
-    
-  }
+    };
+      return false;
 };
 
 
+ function findIsDone (data){
+    if (!data) {
+        return false;
+    };
+    if (data.hasOwnProperty('isDone')) {
+        return data.isDone;
+    };
+    for (let key in data){
+        if(typeof (data[key])==='object'){
+            const result = findIsDone(data[key]);
+            if (result) {
+                return 'isDone';
+            };
+        };
+    };
+    return 'isNotDone';
+};
+ 
+async function endpointsChecker (){
+    let isTrue =0;
+    let isFalse =0;
+    
+    for (let endpoint of ENDPOINTS) {
+        const data = await endpointRequest(endpoint);
+        const result = findIsDone(data);
+        if (!result) {
+            console.log(`[Fail] ${endpoint}: The endpoint is unavailable`);
+        }else if(result==='isDone')
+        {
+            isTrue+=1;
+            console.log(`[Success] ${endpoint}: isDone - True`);
+        }else if(result==='isNotDone'){
+            isFalse+=1;
+             console.log(`[Success] ${endpoint}: isDone - False`);
+        };
+        
+    };
+    console.log(`Found True values: ${isTrue}`);
+    console.log(`Found False values: ${isFalse}`);
+
+};
 
 endpointsChecker();
 
