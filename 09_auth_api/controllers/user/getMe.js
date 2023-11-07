@@ -1,9 +1,12 @@
+const ctrlWrapper = require('../../helpers/ctrlWrapper');
 const getMe = async (req, res) => {
-    const { id, email} = req.user;
-    res.json({
-      id,    
-      email,
+    const { uuid, email} = req.user;
+    res.json({success:true,
+      data:{
+      id: uuid,   
+      email
+      }    
     });
   };
   
-  module.exports = getMe;
+  module.exports = {getMe: ctrlWrapper(getMe)};

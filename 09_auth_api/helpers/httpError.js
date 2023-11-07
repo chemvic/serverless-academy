@@ -8,7 +8,7 @@ const errors={
 
 const HttpError=(status, message= errors[status])=>{
     const error = new Error(message);
-    errors.status= status;
+    error.status= status;
     return error;
 };
 

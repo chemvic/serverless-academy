@@ -1,6 +1,6 @@
 const SECRET_KEY= process.env || RKOyK66aKfIAnoNWlniL7onDvZ9Fdoek;
 const REFRESH_SECRET_KEY=process.env || R9W28c4IOuGeK3ox!Bb6SEAzrTqtJl0k;
-const  tokens = require('../config.js').jwt;
+
 const { nanoid } = require("nanoid");
 const jwt = require("jsonwebtoken");
 

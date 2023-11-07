@@ -14,6 +14,10 @@ app.use("/auth", authRouter);
 
 app.use("/", userRouter);
 
+app.use((req, res, next) => {
+    res.status(404).json({ success:true, error: "Not found" });
+  });
+
 app.use((err, req, res, next)=>{
 const{status=500, message= "Server error"}=err;
 res.status(status).json({message});

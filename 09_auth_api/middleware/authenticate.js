@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const db = require('../db');
 const HttpError = require('../helpers/httpError');
 
 const SECRET_KEY= 'RKOyK66aKfIAnoNWlniL7onDvZ9Fdoek';
@@ -15,13 +16,13 @@ const authenticate =async(req, res, next)=>{
     };
 
     try {
-        const payload = jwt.verify(token, SECRET_KEY);
-
-        if (payload.type!='access') {
-            next(HttpError(401, "Invalid token"));
+        const {id} = jwt.verify(token, SECRET_KEY);
+    
+        const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+        if(user.rows.length === 0){
+            next(HttpError(401, 'Not authorized'));
         };
-//============================SOME CODE=======================================
-
+        req.user = user.rows[0];
 
     } catch (error) {
     if(error instanceof jwt.TokenExpiredError){

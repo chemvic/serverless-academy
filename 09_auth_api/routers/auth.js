@@ -3,6 +3,6 @@ const router =express.Router();
 const ctrl =require('../controllers/auth')
 
 router.post('/sign-up', ctrl.register);
-// router.post('/sign-in', ctrl.login);
+router.post('/sign-in', ctrl.login);
 
 module.exports = router;
