@@ -1,9 +1,11 @@
 const express = require('express');
+const getMe = require('../controllers/user/getMe');
+const authenticate = require('../middleware/authenticate');
 
 const router =express.Router();
 
-router.get('/me', (req, res) => {
-    res.send('Hello World!');
-  });
+
+
+router.get('/me', authenticate, getMe);
 
   module.exports = router;

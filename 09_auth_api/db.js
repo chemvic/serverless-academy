@@ -1,11 +1,9 @@
 const Pool = require('pg').Pool;
-const pool = new Pool(options:{
-    user: 'vic',
-    password: 'yuzhne',
+const pool = new Pool({
+    user: 'postgres',
+    password: 'YUZHNE',
     host: "localhost",
     port:5432,
-    database:'', 
+    database:'api', 
 });
 module.exports = pool;
-/^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$/;
-
