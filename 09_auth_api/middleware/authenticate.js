@@ -1,8 +1,11 @@
 const jwt = require('jsonwebtoken');
-const db = require('../db');
+// const db = require('../db');
 const HttpError = require('../helpers/httpError');
-
-const SECRET_KEY= 'RKOyK66aKfIAnoNWlniL7onDvZ9Fdoek';
+const {SECRET_KEY}= process.env;
+const  { createClient } =require('@supabase/supabase-js');
+const supabaseUrl = 'https://uuwnahknlrbjogoxtzwj.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const authenticate =async(req, res, next)=>{
     const {authorization =""}= req.headers;
@@ -18,11 +21,17 @@ const authenticate =async(req, res, next)=>{
     try {
         const {id} = jwt.verify(token, SECRET_KEY);
     
-        const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-        if(user.rows.length === 0){
+        // const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+        const {data} = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', id);
+        
+        if(data.length === 0){
             next(HttpError(401, 'Not authorized'));
         };
-        req.user = user.rows[0];
+        
+        req.user = data[0];
 
     } catch (error) {
     if(error instanceof jwt.TokenExpiredError){
