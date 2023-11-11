@@ -1,38 +1,57 @@
 const express = require('express');
-
+const fs = require('fs/promises');
+const path = require('path');
 const app= express();
 
 app.use(express.json());
 
-const jsonBase = {};
+let jsonBase = {};
+const dataBasePath =path.join(__dirname,"database.txt");
 
-
-
-const putToBase=(req, res)=>{
+const putToBase= async (req, res)=>{
     const json_name =req.params.json_name; 
     const jsonPayload =req.body;
+    
+    try {    
+    let fileData = await fs.readFile(dataBasePath);
 
-    jsonBase[json_name]=jsonPayload;
+    jsonBase = fileData ? JSON.parse(fileData) : {}; 
+
+       if (jsonBase[json_name]) {
+       return res.status(409).json({message: "This json name already exists"});
+       };
+       jsonBase[json_name]=jsonPayload;
+    
+       await fs.writeFile(dataBasePath, JSON.stringify(jsonBase, null, 2));
+    } catch (error) {
+        console.log(error);
+    };
 
     console.log(json_name);
-    console.log(jsonBase);
     res.status(201).json({
         "json_name": json_name,
- "jsonBase": jsonBase});
+        "jsonPayload": jsonPayload
+    })
 };
 
-const getFromBase =(req, res)=>{
+const getFromBase = async(req, res)=>{
     const json_name =req.params.json_name;
     let jsonPayload;
-    if (jsonBase[json_name]) {
+    try {
+        let fileData = await fs.readFile(dataBasePath);
+        jsonBase = fileData ? JSON.parse(fileData) : {};
+         if (jsonBase[json_name]) {
         jsonPayload =jsonBase[json_name];
         console.log(jsonPayload);
     } else{
-        res.status(404).json({message: "Not found"})
-    }
+       return res.status(404).json({message: "Not found"});
+    } 
+    } catch (error) {
+        console.log(error);
+    };   
     res.status(200).json({
         "json_name": json_name,
- "jsonPayload": jsonPayload});
+         "jsonPayload": jsonPayload});
 }
 
 
