@@ -1,7 +1,6 @@
 {
-  "name": "11_json_storage",
+  "name": "12_shortlinker_api",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -12,8 +11,12 @@
   "author": "chemvic",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "@supabase/supabase-js": "^2.38.4",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "hashids": "^2.3.0"
   },
+  "description": "",
   "devDependencies": {
     "nodemon": "^3.0.1"
   }
