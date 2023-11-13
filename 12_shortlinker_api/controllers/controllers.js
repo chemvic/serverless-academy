@@ -11,6 +11,11 @@ let shortLink='';
 const makeShort = async(req, res, next)=>{
 const longLink= req.body.longLink;
 
+if (longLink==='') {
+    return res.status(400).json({message: 'Enter a valid URL'});
+};
+
+
 try {
  const link = await supabase
   .from('links')
