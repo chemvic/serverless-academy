@@ -1,5 +1,6 @@
 require("dotenv").config();
 const Hashids = require('hashids');
+const axios = require('axios');
 const  { createClient } =require('@supabase/supabase-js');
 const supabaseUrl = 'https://uuwnahknlrbjogoxtzwj.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -15,6 +16,16 @@ if (longLink==='') {
     return res.status(400).json({message: 'Enter a valid URL'});
 };
 
+try {
+  const isAvailable = await checkUrl(longLink);
+
+if (!isAvailable) {
+    return res.status(400).json({message: 'Your URL is not valid'})
+};  
+} catch (error) {
+    throw error;
+};
+
 
 try {
  const link = await supabase
@@ -27,7 +38,7 @@ try {
     return res.status(200).json({shortLink: shortLink});
   };
 } catch (error) {
-  return error;
+  throw error;
 };  
 
   let hashids = new Hashids(longLink, 7);
@@ -43,7 +54,7 @@ try {
     },
   ]); 
   } catch (error) {
-    return error;
+    throw error;
   };  
 
   shortLink = `http://localhost:3000/${id}`;
@@ -76,5 +87,13 @@ try {
 };
 };
 
+async function checkUrl(url) {
+    try {
+        const response = await axios.get(url);
+        return response.status === 200;
+    } catch (error) {
+        return false;
+    };
+};
 
 module.exports = {makeShort, reroute};
