@@ -1,38 +1,15 @@
 const express = require('express');
-require("dotenv").config();
-// const supabaseUrl = 'https://uuwnahknlrbjogoxtzwj.supabase.co';
-// const supabaseKey = process.env.SUPABASE_KEY;
-// const supabase = createClient(supabaseUrl, supabaseKey);
-const Hashids = require('hashids');
-const hashids = new Hashids('abra cadabra', 7);
 
+const ctrl = require('./controllers/controllers');
 
 const app= express();
 
 app.use(express.json());
 
-let longLink='';
 
-const makeShort =async(req, res)=>{
-const longLink= req.body.longLink;
-const id = hashids.encode(7, 4, 9);
-console.log("REQUEST: ", longLink);
-console.log("ID: ", id);
-res.status(200).json({success:"OK"});
-};
 
-const reroute =async(req, res)=>{
-const shortCode =req.params.shortCode;
-console.log(shortCode);
-res.redirect(longLink).status(302).json({
-  success:"OK",
-  longLink: "This is longLink"
-});
-};
-
-app.post('/shortLink', makeShort );
-app.get('/:shortCode', reroute);
-
+app.post('/shortLink', ctrl.makeShort );
+app.get('/:shortCode', ctrl.reroute);
 
 
 app.use((req, res, next) => {
